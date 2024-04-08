@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class PlayFabLogin : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerData _playerData;
     private static readonly string CUSTOM_ID_SAVE_KEY = "CUSTOM_ID_SAVE_KEY";
     private bool _shouldCreateAccount;
     private string _customID;
@@ -43,6 +45,7 @@ public class PlayFabLogin : MonoBehaviour
         }
 
         Debug.Log("ÉçÉOÉCÉìê¨å˜!!");
+        _playerData.SetUserData();
     }
 
     private void OnLoginFailure(PlayFabError error)
