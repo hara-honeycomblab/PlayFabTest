@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -7,5 +8,6 @@ public class MainInstaller : MonoInstaller
     {
         Container.Bind<PlayFabCustomIdLogin>().AsSingle();
         Container.Bind<PlayerData>().AsSingle();
+        Container.BindInterfacesAndSelfTo<AsyncToken>().AsTransient();
     }
 }
