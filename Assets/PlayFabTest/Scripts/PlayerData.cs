@@ -1,6 +1,5 @@
 using PlayFab.ClientModels;
 using PlayFab;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
@@ -17,11 +16,10 @@ public class PlayerData
         {
             Data = player.PlayerData()
         },
-        r => { Debug.Log("Successfully updated user data"); result = r; },
+        r => { Debug.Log("Result SetPlayerData"); result = r; },
         e =>
         {
-            Debug.Log("Got error setting user data Ancestor to Arthur");
-            Debug.Log(e.GenerateErrorReport());
+            Debug.Log("Erorr SetPlayerData:" + e.GenerateErrorReport());
             error = e;
         });
 
@@ -36,10 +34,8 @@ public class PlayerData
 
         var player = new Player();
         PlayFabClientAPI.GetUserData(new GetUserDataRequest()
-        {
-            
-        }, r => {
-            Debug.Log("Got user data:");
+        {}, r => {
+            Debug.Log("Result GetPlayerData");
             if (r.Data == null) return;
 
             //Add Data
@@ -53,8 +49,7 @@ public class PlayerData
             }
             result = r;
         }, (e) => {
-            Debug.Log("Got error retrieving user data:");
-            Debug.Log(e.GenerateErrorReport());
+            Debug.Log("Erorr GetPlayerData:" + e.GenerateErrorReport());
             error = e;
         });
 
@@ -62,6 +57,18 @@ public class PlayerData
 
         cancellationToken.ThrowIfCancellationRequested();
         return player;
+    }
+
+    public async UniTask GetUserMoney(CancellationToken cancellationToken)
+    {
+        GetUserInventoryResult result = null;
+        PlayFabError error = null;
+        var userInventoryRequest = new GetUserInventoryRequest();
+
+        PlayFabClientAPI.GetUserInventory(userInventoryRequest, r => { Debug.Log("Result GetUserMoney"); result = r;}, e => { Debug.Log("Error GetUserMoney:" + e.GenerateErrorReport()); error = e;});
+
+        await new WaitUntil(() => result != null || error != null || cancellationToken.IsCancellationRequested);
+        cancellationToken.ThrowIfCancellationRequested();
     }
 }
 

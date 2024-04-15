@@ -8,6 +8,7 @@ public class MainInstaller : MonoInstaller
     {
         Container.Bind<PlayFabCustomIdLogin>().AsSingle();
         Container.Bind<PlayerData>().AsSingle();
+        Container.Bind<FriendFunction>().AsSingle();
         Container.BindInterfacesAndSelfTo<AsyncToken>().AsTransient();
     }
 }

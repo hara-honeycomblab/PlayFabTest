@@ -6,7 +6,6 @@ using Cysharp.Threading.Tasks;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
-using Zenject;
 
 public class PlayFabCustomIdLogin
 {
