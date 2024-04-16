@@ -31,8 +31,8 @@ public class PlayerData
     {
         GetUserDataResult result = null;
         PlayFabError error = null;
-
         var player = new Player();
+
         PlayFabClientAPI.GetUserData(new GetUserDataRequest()
         {}, r => {
             Debug.Log("Result GetPlayerData");
