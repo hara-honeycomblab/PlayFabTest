@@ -1,8 +1,5 @@
 using UnityEngine;
 using Zenject;
-using PlayFab;
-using PlayFab.ClientModels;
-using PlayFab.Json;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +15,9 @@ public class GameManager : MonoBehaviour
     [Inject]
     private FriendFunction _friendFunction;
 
+    [Inject]
+    private CloudScriptFunction _cloudScriptFunction;
+
     private Player _player = new Player();
 
     private void Start()
@@ -30,24 +30,7 @@ public class GameManager : MonoBehaviour
         await _idLogin.LoginAsync();
         _player = await _playerData.GetPlayerData(_asyncToken.GetToken());
         await _playerData.SetPlayerData(_player, _asyncToken.GetToken());
-        _friendFunction.AddFriend(FriendFunction.FriendIdType.PlayFabId, "", _asyncToken.GetToken());
-    }
-
-    private static void StartCloudHelloWorld()
-    {
-        PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest()
-        {
-            FunctionName = "haratest",
-            FunctionParameter = new { inputValue = "YOUR NAME" },
-            GeneratePlayStreamEvent = true,
-        }, result =>
-        {
-            var jsonResult = (JsonObject)result.FunctionResult;
-            jsonResult.TryGetValue("messageValue", out object messageValue);
-            Debug.Log(messageValue);
-        }, error =>
-        {
-            Debug.Log(error.GenerateErrorReport());
-        });
+        await _friendFunction.AddFriend(FriendFunction.FriendIdType.PlayFabId, "A8CAEC9918F33DF8", _asyncToken.GetToken());
+        await _cloudScriptFunction.DeleteMasterPlayerAccount("2926E26E3B26A8D5", _asyncToken.GetToken());
     }
 }
