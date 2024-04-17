@@ -8,6 +8,7 @@ public class MainInstaller : MonoInstaller
         Container.Bind<PlayerData>().AsSingle();
         Container.Bind<FriendFunction>().AsSingle();
         Container.Bind<CloudScriptFunction>().AsSingle();
+        Container.Bind<RankingFunction>().AsSingle();
         Container.BindInterfacesAndSelfTo<AsyncToken>().AsTransient();
     }
 }
