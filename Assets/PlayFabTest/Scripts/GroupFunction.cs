@@ -1,28 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab;
+using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
-public class CloudScriptFunction
+public class GroupFunction
 {
-    public async UniTask StartCloudHelloWorld(CancellationToken cancellationToken)
+    public async UniTask CreateGroup(string entityToken, string groupName, CancellationToken cancellationToken)
     {
         ExecuteCloudScriptResult result = null;
         PlayFabError error = null;
 
         PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest()
         {
-            FunctionName = "haratest",
-            FunctionParameter = new { inputValue = "YOUR NAME" },
-            GeneratePlayStreamEvent = true,
+            FunctionName = "createGroup",
+            FunctionParameter = new { entityToken = entityToken, groupName = groupName },
+            GeneratePlayStreamEvent = true
         },
-        r => { Debug.Log("Result StartCloudHelloWorld"); result = r; },
+        r => { Debug.Log("Result CreateGroup:" + r); result = r; },
         e =>
         {
-            Debug.Log("Erorr StartCloudHelloWorld:" + e.GenerateErrorReport());
+            Debug.Log("Erorr CreateGroup:" + e.GenerateErrorReport());
             error = e;
         });
 

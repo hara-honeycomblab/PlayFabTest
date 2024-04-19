@@ -6,10 +6,12 @@ using Cysharp.Threading.Tasks;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
+using Zenject;
 
 public class PlayFabCustomIdLogin
 {
-    private static readonly string CUSTOM_ID_SAVE_KEY = "CUSTOM_ID_SAVE_KEY";
+    [Inject]
+    private PlayerPrefsUtility _playerPrefsUtility;
     private bool _shouldCreateAccount;
     private string _customID;
     private const string AES_IV_256 = @"mER5Ve6jZ/F8CY%~";
@@ -17,6 +19,7 @@ public class PlayFabCustomIdLogin
 
     public async UniTask LoginAsync()
     {
+        //_playerPrefsUtility.DeleteCutomId();
         LoginResult result = null;
         PlayFabError error = null;
 
@@ -45,6 +48,7 @@ public class PlayFabCustomIdLogin
             SaveCustomID();
             Debug.Log("SaveCustomID");
         }
+        _playerPrefsUtility.SetEntityToken(result.EntityToken.EntityToken);
         Debug.Log("OnLoginSuccess!!");
     }
 
@@ -54,7 +58,7 @@ public class PlayFabCustomIdLogin
         switch (error.Error)
         {
             case PlayFabErrorCode.AccountNotFound:
-                PlayerPrefs.DeleteKey(CUSTOM_ID_SAVE_KEY);
+                _playerPrefsUtility.DeleteCutomId();
                 await LoginAsync();
                 break;
             default:
@@ -65,7 +69,8 @@ public class PlayFabCustomIdLogin
 
     private string LoadCustomID()
     {
-        var encryptedId = PlayerPrefs.GetString(CUSTOM_ID_SAVE_KEY);
+        
+        var encryptedId = _playerPrefsUtility.GetCutomId();
         Debug.Log("LoadCustomID: encryptedId: " + encryptedId);
         _shouldCreateAccount = string.IsNullOrEmpty(encryptedId);
 
@@ -84,7 +89,7 @@ public class PlayFabCustomIdLogin
     {
         var encrypted = EncryptStringToBytes_Aes(_customID);
         var base64Str = System.Convert.ToBase64String(encrypted);
-        PlayerPrefs.SetString(CUSTOM_ID_SAVE_KEY, base64Str);
+        _playerPrefsUtility.SetCutomId(base64Str);
     }
 
     private string GenerateCustomID()

@@ -1,3 +1,4 @@
+using PlayFab.AuthenticationModels;
 using Zenject;
 
 public class MainInstaller : MonoInstaller
@@ -9,6 +10,9 @@ public class MainInstaller : MonoInstaller
         Container.Bind<FriendFunction>().AsSingle();
         Container.Bind<CloudScriptFunction>().AsSingle();
         Container.Bind<RankingFunction>().AsSingle();
+        Container.Bind<GroupFunction>().AsSingle();
+        Container.Bind<EntityToken>().AsSingle();
+        Container.Bind<PlayerPrefsUtility>().AsSingle();
         Container.BindInterfacesAndSelfTo<AsyncToken>().AsTransient();
     }
 }

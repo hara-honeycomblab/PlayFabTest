@@ -15,7 +15,7 @@ public class RankingFunction
         Score
     }
     
-    public async UniTask SetRankingValue(int value, RankingState rankingState, CancellationToken cancellationToken)
+    public async UniTask SetRankingValue(RankingState rankingState, int value, CancellationToken cancellationToken)
     {
         UpdatePlayerStatisticsResult result = null;
         PlayFabError error = null;
