@@ -2,14 +2,18 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
 using Zenject;
 
-public class PlayFabCustomIdLogin
+public class CustomIdLogin : ICustomIdLogin
 {
+    [Inject]
+    private AsyncToken _asyncToken;
+
     [Inject]
     private PlayerPrefsUtility _playerPrefsUtility;
     private bool _shouldCreateAccount;
@@ -17,7 +21,7 @@ public class PlayFabCustomIdLogin
     private const string AES_IV_256 = @"mER5Ve6jZ/F8CY%~";
     private const string AES_Key_256 = @"kxvuA&k|WDRkzgG47yAsuhwFzkQZMNf3";
 
-    public async UniTask LoginAsync()
+    public async UniTask LoginAsync(CancellationToken cancellationToken)
     {
         //_playerPrefsUtility.DeleteCutomId();
         LoginResult result = null;
@@ -31,7 +35,8 @@ public class PlayFabCustomIdLogin
             async r => { await OnLoginSuccess(r); result = r; },
             async e => { await OnLoginFailure(e); error = e; });
 
-        await new WaitUntil(() => result != null || error != null);
+        await new WaitUntil(() => result != null || error != null || cancellationToken.IsCancellationRequested);
+        cancellationToken.ThrowIfCancellationRequested();
     }
 
     private async UniTask OnLoginSuccess(LoginResult result)
@@ -39,7 +44,7 @@ public class PlayFabCustomIdLogin
         if (_shouldCreateAccount == true && result.NewlyCreated == false)
         {
             Debug.LogWarning("CustomId :" + _customID);
-            await LoginAsync();
+            await LoginAsync(_asyncToken.GetToken());
             return;
         }
 
@@ -59,7 +64,7 @@ public class PlayFabCustomIdLogin
         {
             case PlayFabErrorCode.AccountNotFound:
                 _playerPrefsUtility.DeleteCutomId();
-                await LoginAsync();
+                await LoginAsync(_asyncToken.GetToken());
                 break;
             default:
                 Debug.LogError(error.ErrorMessage);
@@ -69,7 +74,6 @@ public class PlayFabCustomIdLogin
 
     private string LoadCustomID()
     {
-        
         var encryptedId = _playerPrefsUtility.GetCutomId();
         Debug.Log("LoadCustomID: encryptedId: " + encryptedId);
         _shouldCreateAccount = string.IsNullOrEmpty(encryptedId);

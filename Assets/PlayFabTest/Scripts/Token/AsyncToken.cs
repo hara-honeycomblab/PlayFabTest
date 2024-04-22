@@ -15,7 +15,6 @@ public class AsyncToken : IDisposable
 
     public void Dispose()
     {
-        Debug.Log("Dispose");
         _cancellationTokenSource?.Cancel();
     }
 }

@@ -6,7 +6,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
 
-public class PlayFabEmailPasswordLogin : MonoBehaviour
+public class EmailPasswordLogin : MonoBehaviour
 {
     [SerializeField]
     private PlayerData _playerData;
