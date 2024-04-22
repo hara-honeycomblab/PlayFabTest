@@ -11,7 +11,7 @@ public class MainInstaller : MonoInstaller
         Container.Bind<RankingFunction>().AsSingle();
         Container.Bind<GroupFunction>().AsSingle();
         Container.Bind<PlayerPrefsUtility>().AsSingle();
-        Container.Bind<PlayFabPresenter>().AsSingle();
+        Container.Bind<EntityKeyMaker>().AsSingle();
         Container.BindInterfacesAndSelfTo<AsyncToken>().AsTransient();
     }
 }

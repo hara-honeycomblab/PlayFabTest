@@ -15,6 +15,9 @@ public class CustomIdLogin : ICustomIdLogin
     private AsyncToken _asyncToken;
 
     [Inject]
+    private EntityKeyMaker _entityKeyMaker;
+
+    [Inject]
     private PlayerPrefsUtility _playerPrefsUtility;
     private bool _shouldCreateAccount;
     private string _customID;
@@ -54,6 +57,7 @@ public class CustomIdLogin : ICustomIdLogin
             Debug.Log("SaveCustomID");
         }
         _playerPrefsUtility.SetEntityToken(result.EntityToken.EntityToken);
+        _playerPrefsUtility.SetEntityId(result.EntityToken.Entity.Id);
         Debug.Log("OnLoginSuccess!!");
     }
 

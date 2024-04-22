@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerPrefsUtility
@@ -33,5 +31,18 @@ public class PlayerPrefsUtility
     public string GetEntityToken()
     {
         return PlayerPrefs.GetString(ENTITY_TOKEN);
+    }
+
+    // エンティティID
+    private static readonly string ENTITY_ID = "ENTITY_ID";
+
+    public void SetEntityId(string entityId)
+    {
+        PlayerPrefs.SetString(ENTITY_ID, entityId);
+    }
+
+    public string GetEntityId()
+    {
+        return PlayerPrefs.GetString(ENTITY_ID);
     }
 }
