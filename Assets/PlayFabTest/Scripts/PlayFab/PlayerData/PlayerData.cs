@@ -31,8 +31,8 @@ public class PlayerData
     {
         GetUserDataResult result = null;
         PlayFabError error = null;
-
         var player = new Player();
+
         PlayFabClientAPI.GetUserData(new GetUserDataRequest()
         {}, r => {
             Debug.Log("Result GetPlayerData");
@@ -57,6 +57,28 @@ public class PlayerData
 
         cancellationToken.ThrowIfCancellationRequested();
         return player;
+    }
+
+    public async UniTask DeleteMasterPlayerAccount(string playfabId, CancellationToken cancellationToken)
+    {
+        ExecuteCloudScriptResult result = null;
+        PlayFabError error = null;
+
+        PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest()
+        {
+            FunctionName = "deleteMasterPlayerAccount",
+            FunctionParameter = new { playfabId = playfabId },
+            GeneratePlayStreamEvent = true
+        },
+        r => { Debug.Log("Result DeleteMasterPlayerAccount"); result = r; },
+        e =>
+        {
+            Debug.Log("Erorr DeleteMasterPlayerAccount:" + e.GenerateErrorReport());
+            error = e;
+        });
+
+        await new WaitUntil(() => result != null || error != null || cancellationToken.IsCancellationRequested);
+        cancellationToken.ThrowIfCancellationRequested();
     }
 
     public async UniTask GetUserMoney(CancellationToken cancellationToken)
