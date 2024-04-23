@@ -9,22 +9,19 @@ using PlayFab.ClientModels;
 using UnityEngine;
 using Zenject;
 
-public class CustomIdLogin : ICustomIdLogin
+public class CustomIdLogin : AsyncToken, ICustomIdLogin
 {
     [Inject]
-    private AsyncToken _asyncToken;
-    [Inject]
     private PlayerPrefsUtility _playerPrefsUtility;
-    [Inject]
-    private GroupFunction _groupFunction;
     private bool _shouldCreateAccount;
     private string _customID;
     private const string AES_IV_256 = @"mER5Ve6jZ/F8CY%~";
     private const string AES_Key_256 = @"kxvuA&k|WDRkzgG47yAsuhwFzkQZMNf3";
 
-    public async UniTask LoginAsync(CancellationToken cancellationToken)
+    public async UniTask LoginAsync()
     {
         //_playerPrefsUtility.DeleteCutomId();
+        var token = GetToken();
         LoginResult result = null;
         PlayFabError error = null;
 
@@ -36,8 +33,8 @@ public class CustomIdLogin : ICustomIdLogin
             async r => { await OnLoginSuccess(r); result = r; },
             async e => { await OnLoginFailure(e); error = e; });
 
-        await new WaitUntil(() => result != null || error != null || cancellationToken.IsCancellationRequested);
-        cancellationToken.ThrowIfCancellationRequested();
+        await new WaitUntil(() => result != null || error != null || token.IsCancellationRequested);
+        token.ThrowIfCancellationRequested();
     }
 
     private async UniTask OnLoginSuccess(LoginResult result)
@@ -45,7 +42,7 @@ public class CustomIdLogin : ICustomIdLogin
         if (_shouldCreateAccount == true && result.NewlyCreated == false)
         {
             Debug.LogWarning("CustomId :" + _customID);
-            await LoginAsync(_asyncToken.GetToken());
+            await LoginAsync();
             return;
         }
 
@@ -66,7 +63,7 @@ public class CustomIdLogin : ICustomIdLogin
         {
             case PlayFabErrorCode.AccountNotFound:
                 _playerPrefsUtility.DeleteCutomId();
-                await LoginAsync(_asyncToken.GetToken());
+                await LoginAsync();
                 break;
             default:
                 Debug.LogError(error.ErrorMessage);

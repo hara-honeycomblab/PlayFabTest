@@ -5,9 +5,6 @@ using Zenject;
 public class GameManager : MonoBehaviour
 {
     [Inject]
-    private AsyncToken _asyncToken;
-
-    [Inject]
     private ICustomIdLogin _iCustomIdLogin;
 
     [Inject]
@@ -25,8 +22,8 @@ public class GameManager : MonoBehaviour
 
     private async void StartAsync()
     {
-        await _iCustomIdLogin.LoginAsync(_asyncToken.GetToken());
-        var entityKey = _playerPrefsUtility.GetEntityKeyForGroups();
-        await _groupFunction.CreateGroup("playfabtest", entityKey, _asyncToken.GetToken());
+        await _iCustomIdLogin.LoginAsync();
+        // var entityKey = _playerPrefsUtility.GetEntityKeyForGroups();
+        // await _groupFunction.CreateGroup("playfabtest", entityKey, _asyncToken.GetToken());
     }
 }

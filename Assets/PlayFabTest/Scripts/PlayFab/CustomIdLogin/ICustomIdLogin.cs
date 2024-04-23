@@ -3,5 +3,5 @@ using Cysharp.Threading.Tasks;
 
 public interface ICustomIdLogin
 {
-    UniTask LoginAsync(CancellationToken cancellationToken);
+    UniTask LoginAsync();
 }
