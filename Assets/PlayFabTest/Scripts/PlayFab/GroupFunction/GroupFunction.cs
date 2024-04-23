@@ -51,10 +51,10 @@ public class GroupFunction
 
         var request = new DeleteGroupRequest { Group = EntityKeyMaker(groupId) };
         PlayFabGroupsAPI.DeleteGroup(request,
-        r => { Debug.Log("Result ListGroups:" + r); result = r; },
+        r => { Debug.Log("Result DeleteGroup:" + r); result = r; },
         e =>
         {
-            Debug.Log("Erorr ListGroups:" + e.GenerateErrorReport());
+            Debug.Log("Erorr DeleteGroup:" + e.GenerateErrorReport());
             error = e;
         });
 
@@ -69,10 +69,10 @@ public class GroupFunction
 
         var request = new InviteToGroupRequest { Group = EntityKeyMaker(groupId), Entity = entityKey };
         PlayFabGroupsAPI.InviteToGroup(request,
-        async r => { Debug.Log("Result ListGroups:" + r); await OnInvite(r, cancellationToken); result = r; },
+        async r => { Debug.Log("Result InviteToGroup:" + r); await OnInvite(r, cancellationToken); result = r; },
         e =>
         {
-            Debug.Log("Erorr ListGroups:" + e.GenerateErrorReport());
+            Debug.Log("Erorr InviteToGroup:" + e.GenerateErrorReport());
             error = e;
         });
 
@@ -88,10 +88,10 @@ public class GroupFunction
 
         var request = new AcceptGroupInvitationRequest { Group = EntityKeyMaker(prevRequest.Group.Id), Entity = prevRequest.Entity };
         PlayFabGroupsAPI.AcceptGroupInvitation(request,
-        r => { Debug.Log("Result ListGroups:" + r); result = r; },
+        r => { Debug.Log("Result OnInvite:" + r); result = r; },
         e =>
         {
-            Debug.Log("Erorr ListGroups:" + e.GenerateErrorReport());
+            Debug.Log("Erorr OnInvite:" + e.GenerateErrorReport());
             error = e;
         });
 
@@ -105,10 +105,10 @@ public class GroupFunction
         PlayFabError error = null;
         var request = new ApplyToGroupRequest { Group = EntityKeyMaker(groupId), Entity = entityKey };
         PlayFabGroupsAPI.ApplyToGroup(request,
-        async r => { Debug.Log("Result ListGroups:" + r); await OnApply(r, cancellationToken); result = r; },
+        async r => { Debug.Log("Result ApplyToGroup:" + r); await OnApply(r, cancellationToken); result = r; },
         e =>
         {
-            Debug.Log("Erorr ListGroups:" + e.GenerateErrorReport());
+            Debug.Log("Erorr ApplyToGroup:" + e.GenerateErrorReport());
             error = e;
         });
 
@@ -124,10 +124,10 @@ public class GroupFunction
 
         var request = new AcceptGroupApplicationRequest { Group = prevRequest.Group, Entity = prevRequest.Entity };
         PlayFabGroupsAPI.AcceptGroupApplication(request,
-        r => { Debug.Log("Result ListGroups:" + r); result = r; },
+        r => { Debug.Log("Result OnApply:" + r); result = r; },
         e =>
         {
-            Debug.Log("Erorr ListGroups:" + e.GenerateErrorReport());
+            Debug.Log("Erorr OnApply:" + e.GenerateErrorReport());
             error = e;
         });
 
@@ -142,10 +142,10 @@ public class GroupFunction
         
         var request = new RemoveMembersRequest { Group = EntityKeyMaker(groupId), Members = new List<EntityKey> { entityKey } };
         PlayFabGroupsAPI.RemoveMembers(request,
-        r => { Debug.Log("Result ListGroups:" + r); result = r; },
+        r => { Debug.Log("Result KickMember:" + r); result = r; },
         e =>
         {
-            Debug.Log("Erorr ListGroups:" + e.GenerateErrorReport());
+            Debug.Log("Erorr KickMember:" + e.GenerateErrorReport());
             error = e;
         });
 
