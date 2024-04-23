@@ -13,12 +13,10 @@ public class CustomIdLogin : ICustomIdLogin
 {
     [Inject]
     private AsyncToken _asyncToken;
-
-    [Inject]
-    private EntityKeyMaker _entityKeyMaker;
-
     [Inject]
     private PlayerPrefsUtility _playerPrefsUtility;
+    [Inject]
+    private GroupFunction _groupFunction;
     private bool _shouldCreateAccount;
     private string _customID;
     private const string AES_IV_256 = @"mER5Ve6jZ/F8CY%~";
@@ -57,7 +55,7 @@ public class CustomIdLogin : ICustomIdLogin
             Debug.Log("SaveCustomID");
         }
         _playerPrefsUtility.SetEntityToken(result.EntityToken.EntityToken);
-        _playerPrefsUtility.SetEntityId(result.EntityToken.Entity.Id);
+        _playerPrefsUtility.SetEntityKey(result.EntityToken.Entity);
         Debug.Log("OnLoginSuccess!!");
     }
 
