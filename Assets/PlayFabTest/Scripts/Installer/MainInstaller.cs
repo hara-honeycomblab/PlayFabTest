@@ -11,6 +11,7 @@ public class MainInstaller : MonoInstaller
         Container.Bind<CloudScriptFunction>().AsSingle();
         Container.Bind<RankingFunction>().AsSingle();
         Container.Bind<GroupFunction>().AsSingle();
+        Container.Bind<IPlayerInventory>().To<PlayerInventory>().AsSingle();
         Container.Bind<PlayerPrefsUtility>().AsSingle();
         Container.Bind<AesProcess>().AsSingle();
         Container.BindInterfacesAndSelfTo<AsyncToken>().AsTransient();

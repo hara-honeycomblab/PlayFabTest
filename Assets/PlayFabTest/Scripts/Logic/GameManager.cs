@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     private IEmailPasswordLogin _iEmailPasswordLogin;
 
     [Inject]
+    private IPlayerInventory _iPlayerInventory;
+
+    [Inject]
     private PlayerData _playerData;
 
     private Player _player = new Player();
@@ -23,7 +26,11 @@ public class GameManager : MonoBehaviour
     private async void StartAsync()
     {
         await _iEmailPasswordLogin.LoginAsync("hara@honeycomb-lab.co.jp", "harahara");
-        await _playerData.GetPlayerData();
-        await _playerData.GetUserMoney();
+        await _iPlayerInventory.GetUserInventory();
+        // var strs = new string[2];
+        // strs[0] = "key1";
+        // strs[1] = "con_treasure_1";
+        // await _iPlayerInventory.GrantItemsToUser("8C27883BCB36DEE6", strs);
+
     }
 }
