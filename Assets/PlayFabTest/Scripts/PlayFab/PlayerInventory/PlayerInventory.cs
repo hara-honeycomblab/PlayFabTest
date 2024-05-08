@@ -31,23 +31,24 @@ public class PlayerInventory : AsyncToken, IPlayerInventory
         token.ThrowIfCancellationRequested();
     }
 
-    public async UniTask GetUserInventory()
+    public async UniTask<List<ItemInstance>> GetUserInventory()
     {
         var token = GetToken();
         GetUserInventoryResult result = null;
         PlayFabError error = null;
+        List<ItemInstance> userInventry = new List<ItemInstance>();
 
         PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest
         {},
         r => 
         { 
             Debug.Log("Result UnlockContainerInstance"); 
-            var userInventry = r.Inventory;
+            userInventry = r.Inventory;
             foreach(var item in userInventry)
             {
                 Debug.Log(item.DisplayName + item.ItemInstanceId);
             }
-            result = r; 
+            result = r;
         },
         e =>
         {
@@ -57,6 +58,8 @@ public class PlayerInventory : AsyncToken, IPlayerInventory
 
         await new WaitUntil(() => result != null || error != null || token.IsCancellationRequested);
         token.ThrowIfCancellationRequested();
+
+        return userInventry;
     }
 
     public async UniTask UnlockContainerInstance(string containerItemInstanceId, string keyItemInstanceId = "")

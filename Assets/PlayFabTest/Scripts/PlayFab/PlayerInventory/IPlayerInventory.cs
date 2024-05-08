@@ -9,6 +9,6 @@ using UnityEngine;
 public interface IPlayerInventory
 {
     UniTask GrantItemsToUser(string playfabId, string[] itemIds);
-    UniTask GetUserInventory();
+    UniTask<List<ItemInstance>> GetUserInventory();
     UniTask UnlockContainerInstance(string containerItemInstanceId, string keyItemInstanceId = "");
 }
