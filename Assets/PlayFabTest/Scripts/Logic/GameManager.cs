@@ -8,10 +8,13 @@ public class GameManager : MonoBehaviour
     private ICustomIdLogin _iCustomIdLogin;
 
     [Inject]
-    private PlayerPrefsUtility _playerPrefsUtility;
+    private IEmailPasswordLogin _iEmailPasswordLogin;
 
     [Inject]
-    private GroupFunction _groupFunction;
+    private IPlayerInventory _iPlayerInventory;
+
+    [Inject]
+    private PlayerData _playerData;
 
     private Player _player = new Player();
 
@@ -22,8 +25,7 @@ public class GameManager : MonoBehaviour
 
     private async void StartAsync()
     {
-        await _iCustomIdLogin.LoginAsync();
-        // var entityKey = _playerPrefsUtility.GetEntityKeyForGroups();
-        // await _groupFunction.CreateGroup("playfabtest", entityKey, _asyncToken.GetToken());
+        await _iEmailPasswordLogin.LoginAsync("hara@honeycomb-lab.co.jp", "harahara");
+        await _iPlayerInventory.GetUserInventory();
     }
 }

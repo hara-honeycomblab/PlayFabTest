@@ -5,10 +5,11 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
-public class PlayerData
+public class PlayerData : AsyncToken
 {
-    public async UniTask SetPlayerData(Player player, CancellationToken cancellationToken)
+    public async UniTask SetPlayerData(Player player)
     {
+        var token = GetToken();
         UpdateUserDataResult result = null;
         PlayFabError error = null;
 
@@ -23,12 +24,13 @@ public class PlayerData
             error = e;
         });
 
-        await new WaitUntil(() => result != null || error != null || cancellationToken.IsCancellationRequested);
-        cancellationToken.ThrowIfCancellationRequested();
+        await new WaitUntil(() => result != null || error != null || token.IsCancellationRequested);
+        token.ThrowIfCancellationRequested();
     }
 
-    public async UniTask<Player> GetPlayerData(CancellationToken cancellationToken)
+    public async UniTask<Player> GetPlayerData()
     {
+        var token = GetToken();
         GetUserDataResult result = null;
         PlayFabError error = null;
         var player = new Player();
@@ -53,14 +55,15 @@ public class PlayerData
             error = e;
         });
 
-        await new WaitUntil(() => result != null || error != null || cancellationToken.IsCancellationRequested);
+        await new WaitUntil(() => result != null || error != null || token.IsCancellationRequested);
 
-        cancellationToken.ThrowIfCancellationRequested();
+        token.ThrowIfCancellationRequested();
         return player;
     }
 
-    public async UniTask DeleteMasterPlayerAccount(string playfabId, CancellationToken cancellationToken)
+    public async UniTask DeleteMasterPlayerAccount(string playfabId)
     {
+        var token = GetToken();
         ExecuteCloudScriptResult result = null;
         PlayFabError error = null;
 
@@ -77,20 +80,21 @@ public class PlayerData
             error = e;
         });
 
-        await new WaitUntil(() => result != null || error != null || cancellationToken.IsCancellationRequested);
-        cancellationToken.ThrowIfCancellationRequested();
+        await new WaitUntil(() => result != null || error != null || token.IsCancellationRequested);
+        token.ThrowIfCancellationRequested();
     }
 
-    public async UniTask GetUserMoney(CancellationToken cancellationToken)
+    public async UniTask GetUserMoney()
     {
+        var token = GetToken();
         GetUserInventoryResult result = null;
         PlayFabError error = null;
         var userInventoryRequest = new GetUserInventoryRequest();
 
         PlayFabClientAPI.GetUserInventory(userInventoryRequest, r => { Debug.Log("Result GetUserMoney"); result = r;}, e => { Debug.Log("Error GetUserMoney:" + e.GenerateErrorReport()); error = e;});
 
-        await new WaitUntil(() => result != null || error != null || cancellationToken.IsCancellationRequested);
-        cancellationToken.ThrowIfCancellationRequested();
+        await new WaitUntil(() => result != null || error != null || token.IsCancellationRequested);
+        token.ThrowIfCancellationRequested();
     }
 }
 
