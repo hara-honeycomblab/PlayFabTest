@@ -27,10 +27,5 @@ public class GameManager : MonoBehaviour
     {
         await _iEmailPasswordLogin.LoginAsync("hara@honeycomb-lab.co.jp", "harahara");
         await _iPlayerInventory.GetUserInventory();
-        // var strs = new string[2];
-        // strs[0] = "key1";
-        // strs[1] = "con_treasure_1";
-        // await _iPlayerInventory.GrantItemsToUser("8C27883BCB36DEE6", strs);
-
     }
 }

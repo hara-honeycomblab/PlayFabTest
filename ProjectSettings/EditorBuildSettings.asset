@@ -4,5 +4,9 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: "Assets/GO Map - 3D Map For AR Gaming/Demo/Flat Map - Poke\u0300mon GO
+      Style.unity"
+    guid: 331e65508a1194ad58e0fcfb4ca518b4
   m_configObjects: {}
