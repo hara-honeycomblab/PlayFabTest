@@ -5,7 +5,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
-public class PlayerData : AsyncToken
+public class PlayerData : AsyncToken, IPlayerData
 {
     public async UniTask SetPlayerData(Player player)
     {

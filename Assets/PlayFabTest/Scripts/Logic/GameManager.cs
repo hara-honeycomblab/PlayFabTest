@@ -13,9 +13,6 @@ public class GameManager : MonoBehaviour
     [Inject]
     private IPlayerInventory _iPlayerInventory;
 
-    [Inject]
-    private PlayerData _playerData;
-
     private Player _player = new Player();
 
     private void Start()
@@ -26,6 +23,5 @@ public class GameManager : MonoBehaviour
     private async void StartAsync()
     {
         await _iEmailPasswordLogin.LoginAsync("hara@honeycomb-lab.co.jp", "harahara");
-        await _iPlayerInventory.GetUserInventory();
     }
 }

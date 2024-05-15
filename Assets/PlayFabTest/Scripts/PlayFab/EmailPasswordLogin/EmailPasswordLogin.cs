@@ -63,6 +63,7 @@ public class EmailPasswordLogin : AsyncToken, IEmailPasswordLogin
     {
         _playerPrefsUtility.SetEntityToken(result.EntityToken.EntityToken);
         _playerPrefsUtility.SetEntityKey(result.EntityToken.Entity);
+        _playerPrefsUtility.SetPlayFabId(result.PlayFabId);
         Debug.Log("OnLoginSuccess!!");
     }
 }

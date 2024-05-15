@@ -22,6 +22,19 @@ public class PlayerPrefsUtility
         PlayerPrefs.DeleteKey(CUSTOM_ID_SAVE_KEY);
     }
 
+    // PlayFabId 
+    private static readonly string PLAYFAB_ID = "PLAYFAB_ID";
+
+    public void SetPlayFabId(string playFabId)
+    {
+        PlayerPrefs.SetString(PLAYFAB_ID, playFabId);
+    }
+
+    public string GetPlayFabId()
+    {
+        return PlayerPrefs.GetString(PLAYFAB_ID);
+    }
+
     // エンティティトークン 
     private static readonly string ENTITY_TOKEN = "ENTITY_TOKEN";
 
@@ -47,8 +60,7 @@ public class PlayerPrefsUtility
     public PlayFab.ClientModels.EntityKey GetEntityKeyForClient()
     {
         var jsonStr = PlayerPrefs.GetString(ENTITY_KEY);
-        var entityKey = JsonUtility.FromJson<PlayFab.ClientModels.EntityKey>(jsonStr);
-        
+        var entityKey = JsonUtility.FromJson<PlayFab.ClientModels.EntityKey>(jsonStr);        
         return entityKey;
     }
 
